@@ -14,16 +14,20 @@ const Signup = () => {
     e.preventDefault();
     setError(""); // Reset error message
     try {
-      const response = await axios.post("http://localhost:5000/signup", { username, email, password });
-      if (response.data.message) {
-        alert("Signup Successful! Please Login.");
-        navigate("/login");
-      }
+        const response = await axios.post("http://localhost:5000/signup", 
+            { username, email, password },
+            { withCredentials: true } // Ensure credentials are sent
+        );
+        if (response.data.message) {
+            alert("Signup Successful! Please Login.");
+            navigate("/login");
+        }
     } catch (err) {
-      setError(err.response?.data?.error || "Signup failed. Please try again."); // Display error message
-      console.error("Signup Error:", err); // Log the error for debugging
+        setError(err.response?.data?.error || "Signup failed. Please try again.");
+        console.error("Signup Error:", err);
     }
-  };
+};
+
 
   return (
     <div className="auth-container">

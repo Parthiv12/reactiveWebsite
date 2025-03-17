@@ -13,17 +13,21 @@ const Login = () => {
     e.preventDefault();
     setError(""); // Reset error message
     try {
-      const res = await axios.post("http://localhost:5000/login", { email, password });
-      if (res.data.token) {
-        alert("Login Successful!");
-        localStorage.setItem("token", res.data.token);
-        navigate("/dashboard");
-      }
+        const res = await axios.post("http://localhost:5000/login", 
+            { email, password },
+            { withCredentials: true } // Ensure credentials are sent
+        );
+        if (res.data.token) {
+            alert("Login Successful!");
+            localStorage.setItem("token", res.data.token);
+            navigate("/dashboard");
+        }
     } catch (err) {
-      setError(err.response?.data?.error || "Login failed. Please try again."); // Display error message
-      console.error("Login Error:", err); // Log the error for debugging
+        setError(err.response?.data?.error || "Login failed. Please try again.");
+        console.error("Login Error:", err);
     }
-  };
+};
+
 
   return (
     <div className="auth-container">

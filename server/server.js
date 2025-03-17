@@ -7,12 +7,13 @@ const jwt = require("jsonwebtoken");
 
 dotenv.config();
 const app = express();
-app.use(cors());
-app.use(express.json());
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}));
+
 
 mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
 }).then(() => console.log("MongoDB Connected")).catch(err => console.log(err));
 
 // User Schema
@@ -30,7 +31,7 @@ app.get("/", (req, res) => {
 });
 
 // Route to get all users
-app.get("/", async (req, res) => {
+app.get("/users", async (req, res) => {
   try {
     const users = await User.find({}, { password: 0 }); // Exclude passwords from the response
     res.json(users);
@@ -38,6 +39,7 @@ app.get("/", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch users" });
   }
 });
+
 
 // Signup Route
 app.post("/signup", async (req, res) => {
