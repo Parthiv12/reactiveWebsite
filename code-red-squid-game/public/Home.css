@@ -1,0 +1,75 @@
+/* Full-Screen Centering */
+.home-container {
+    display: flex;
+    flex-direction: column; /* Stack text & buttons */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: black;
+    text-align: center;
+  }
+  
+  /* CODE RED Styling */
+  .code-red {
+    font-size: 10vw;
+    color: red;
+    font-weight: bold;
+    animation: pulse 1s infinite alternate;
+    position: absolute;
+  }
+  
+  /* Pulsing Animation */
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.2);
+      opacity: 0.8;
+    }
+  }
+  
+  /* Fade-out effect */
+  .fade-out {
+    animation: fadeOut 1s forwards;
+  }
+  
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+  
+  /* Buttons Container */
+  .buttons-container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    opacity: 0;  /* Initially hidden */
+    animation: fadeIn 1s ease-in 2.2s forwards; /* Appears after 2.2s */
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
