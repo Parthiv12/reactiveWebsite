@@ -7,22 +7,28 @@ const Signup = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // Add error state
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    setError(""); // Reset error message
     try {
-      await axios.post("http://localhost:5000/signup", { username, email, password });
-      alert("Signup Successful! Please Login.");
-      navigate("/login");
+      const response = await axios.post("http://localhost:5000/signup", { username, email, password });
+      if (response.data.message) {
+        alert("Signup Successful! Please Login.");
+        navigate("/login");
+      }
     } catch (err) {
-      alert(err.response.data.error || "Signup failed");
+      setError(err.response?.data?.error || "Signup failed. Please try again."); // Display error message
+      console.error("Signup Error:", err); // Log the error for debugging
     }
   };
 
   return (
     <div className="auth-container">
       <h2>Sign Up</h2>
+      {error && <p className="error-message">{error}</p>} {/* Display error message */}
       <form onSubmit={handleSignup}>
         <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
         <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />

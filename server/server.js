@@ -24,9 +24,21 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", UserSchema);
 
-app.get("/", (res,req) =>{
+app.get("/", (req, res) => {
     console.log("Backend is running!");
+    res.send("Backend is running!");
 });
+
+// Route to get all users
+app.get("/", async (req, res) => {
+  try {
+    const users = await User.find({}, { password: 0 }); // Exclude passwords from the response
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch users" });
+  }
+});
+
 // Signup Route
 app.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
@@ -42,7 +54,7 @@ app.post("/signup", async (req, res) => {
   const newUser = new User({ username, email, password: hashedPassword });
   await newUser.save();
 
-  console.log(`User Signed Up: ${username}`);
+  console.log(`User Signed Up: ${username} (${email})`);
   res.json({ message: "User registered successfully!" });
 });
 
@@ -58,7 +70,7 @@ app.post("/login", async (req, res) => {
 
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-  console.log(`User Logged In: ${user.username}`);
+  console.log(`User Logged In: ${user.username} (${user.email})`);
   res.json({ token, user: { username: user.username, email: user.email } });
 });
 

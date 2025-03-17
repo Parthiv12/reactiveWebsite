@@ -7,9 +7,11 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setFadeOut(true);
     }, 2000);
+
+    return () => clearTimeout(timer); // Cleanup timer
   }, []);
 
   return (
